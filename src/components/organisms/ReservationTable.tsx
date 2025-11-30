@@ -15,9 +15,6 @@ type Props = {
 export type ModalType = "none" | "reserve" | "success" | "error";
 
 export const ReservationTable = (props: Props) => {
-
-
-
     const { machine } = props;
 
     // モーダルの種類
