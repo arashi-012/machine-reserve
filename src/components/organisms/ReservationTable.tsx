@@ -1,7 +1,6 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { useState } from "react";
 import { ReserveModal } from "../modals/ReserveModal";
-import { ErrorModal } from "../modals/ErrorModal";
 
 type Reservation = {
     machine: string;
@@ -13,12 +12,13 @@ type Reservation = {
 type Props = {
     machine: string;
 }
-
-export const ReservationTable = (props: Props) => {
 export type ModalType = "none" | "reserve" | "success" | "error";
 
+export const ReservationTable = (props: Props) => {
 
-const { machine } = props;
+
+
+    const { machine } = props;
 
     // モーダルの種類
     const [modal, setModal] = useState<ModalType>("none");
