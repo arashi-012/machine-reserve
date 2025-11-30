@@ -1,6 +1,7 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { useState } from "react";
-import { Modal } from "../atoms/Modal";
+import { ReserveModal } from "../modals/ReserveModal";
+import { ErrorModal } from "../modals/ErrorModal";
 
 type Reservation = {
     machine: string;
@@ -14,14 +15,19 @@ type Props = {
 }
 
 export const ReservationTable = (props: Props) => {
+export type ModalType = "none" | "reserve" | "success" | "error";
 
-    const { machine } = props;
 
-    const [open, setOpen] = useState(false);
+const { machine } = props;
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    // モーダルの種類
+    const [modal, setModal] = useState<ModalType>("none");
 
+    // 予約ボタン
+    const onClickReserve = () => {
+
+        setModal("reserve");
+    }
 
     const initialReservations: Reservation[] = [
         { machine: "パワーラック", time: "09:00 - 10:00", reserved: false },
@@ -51,7 +57,7 @@ export const ReservationTable = (props: Props) => {
                                     <TableCell>{reservations.reserved ? (reservations.name) : ("-")}
                                     </TableCell>
                                     <TableCell>{reservations.reserved ? (<Button color="error">キャンセル</Button>)
-                                        : (<Button variant="contained" onClick={handleOpen}>予約</Button>)}
+                                        : (<Button variant="contained" onClick={onClickReserve}>予約</Button>)}
                                     </TableCell>
                                 </TableRow>) : (<TableRow></TableRow>)
 
@@ -61,7 +67,11 @@ export const ReservationTable = (props: Props) => {
                 </Table>
             </TableContainer>
 
-            <Modal open={open} handleClose={handleClose} />
+            {/*モーダルの制御 */}
+            {modal === "reserve" && (<ReserveModal open={true} setModal={setModal} />)}
+            {modal === "reserve" && (<ReserveModal open={true} setModal={setModal} />)}
+            {modal === "reserve" && (<ReserveModal open={true} setModal={setModal} />)}
+            {modal === "reserve" && (<ReserveModal open={true} setModal={setModal} />)}
         </>
     )
 }
