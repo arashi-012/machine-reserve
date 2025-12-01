@@ -1,5 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material"
 import type { ModalType } from "../organisms/ReservationTable";
+import { useErrorContext } from "../../contexts/error/useErrorContext";
 
 type Props = {
     open: boolean
@@ -10,12 +11,16 @@ export const ReserveModal = (props: Props) => {
 
     const {open, setModal} = props;
 
+    const errorContext = useErrorContext();
+
     const onClickClose =()=>{
         setModal("none");
     }
 
     const onClickReserve =()=>{
+        // TODO:API呼び出しに変える。
         setModal("error");
+        errorContext.setError("API呼び出しでエラーが発生しました。");
     }
 
     return (
