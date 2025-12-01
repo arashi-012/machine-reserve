@@ -1,6 +1,8 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { useState } from "react";
-import { Modal } from "../atoms/Modal";
+import { ReserveModal } from "../modals/ReserveModal";
+import { ErrorModal } from "../modals/ErrorModal";
+import { useErrorContext } from "../../contexts/error/useErrorContext";
 
 type Reservation = {
     machine: string;
@@ -12,20 +14,26 @@ type Reservation = {
 type Props = {
     machine: string;
 }
+export type ModalType = "none" | "reserve" | "success" | "error";
 
 export const ReservationTable = (props: Props) => {
-
     const { machine } = props;
 
-    const [open, setOpen] = useState(false);
+    // モーダルの種類
+    const [modal, setModal] = useState<ModalType>("none");
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    // エラーコンテキスト
+    const errorContext = useErrorContext();
 
+    // 予約ボタン
+    const onClickReserve = () => {
+        setModal("reserve");
+    }
 
+    // データの取得はAPIを使って行う。
     const initialReservations: Reservation[] = [
-        { machine: "パワーラック", time: "09:00 - 10:00", reserved: false },
         { machine: "スミスマシン", time: "10:00 - 11:00", reserved: true, name: "山田太郎" },
+        { machine: "パワーラック", time: "09:00 - 10:00", reserved: false },
         { machine: "インクラインベンチ", time: "11:00 - 12:00", reserved: false },
         { machine: "パワーラック", time: "12:00 - 13:00", reserved: false },
         { machine: "スミスマシン", time: "13:00 - 14:00", reserved: true, name: "佐藤花子" },
@@ -51,17 +59,18 @@ export const ReservationTable = (props: Props) => {
                                     <TableCell>{reservations.reserved ? (reservations.name) : ("-")}
                                     </TableCell>
                                     <TableCell>{reservations.reserved ? (<Button color="error">キャンセル</Button>)
-                                        : (<Button variant="contained" onClick={handleOpen}>予約</Button>)}
+                                        : (<Button variant="contained" onClick={onClickReserve}>予約</Button>)}
                                     </TableCell>
                                 </TableRow>) : (<TableRow></TableRow>)
-
                         ))}
                     </TableBody>
 
                 </Table>
             </TableContainer>
 
-            <Modal open={open} handleClose={handleClose} />
+            {/*モーダルの制御 */}
+            {modal === "reserve" && (<ReserveModal open={true} setModal={setModal} />)}
+            {modal === "error" && (<ErrorModal open={true} setModal={setModal} errors={errorContext.error} />)}
         </>
     )
 }
