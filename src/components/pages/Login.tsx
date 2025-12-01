@@ -19,7 +19,7 @@ export const Login = () => {
                 userName: "Arashi",
                 email: email
             });
-            navigate("/home");
+            navigate("/");
         } else {
             alert("メールアドレスまたはパスワードが違います");
         }

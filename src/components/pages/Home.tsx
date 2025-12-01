@@ -6,7 +6,6 @@ import { SelectMachine } from "../organisms/SelectMachine";
 
 export const Home = () => {
     const [machine, setMachine] = useState("パワーラック");
-
     return (
         <>
 
